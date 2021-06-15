@@ -8,21 +8,29 @@ const fetchCustomers = async () => await API.getAll();
 const HomePage = () => {
   // Fetch all records from database and hold in state.
   const { status, data, error } = useQuery('customers', fetchCustomers);
-  console.log(data);
 
   const queryClient = useQueryClient();
 
   const addCustomer = useMutation(customer => API.create(customer));
+  const deleteCustomer = useMutation(id => API.delete(id));
 
   const handleSubmit = event => {
     event.preventDefault();
-    console.log(event);
     addCustomer.mutate(Object.fromEntries(new FormData(event.target)), {
       onSuccess: () => {
         queryClient.invalidateQueries('customers');
       }
     });
   };
+
+  const handleDelete = event => {
+    event.preventDefault();
+    deleteCustomer.mutate(event.target.dataset.id, {
+      onSuccess: () => {
+        queryClient.invalidateQueries('customers');
+      }
+    })
+  }
 
   switch (status) {
     case 'loading':
@@ -34,7 +42,7 @@ const HomePage = () => {
         <div className="container">
           <h1 className="text-center mt-5">Customer Database</h1>
           <InputForm handleSubmit={handleSubmit} />
-          <CustomerTable customers={data} />
+          <CustomerTable customers={data} handleDelete={handleDelete} />
         </div>
       )
   }

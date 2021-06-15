@@ -52,3 +52,6 @@ form div:nth-child(4) {
   background: #F5A962;
   color: #343a40;
 }
+.delete {
+  padding: 0 5px 0 5px;
+}

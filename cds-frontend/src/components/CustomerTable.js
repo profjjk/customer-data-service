@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function CustomerTable({ customers }) {
+function CustomerTable({ customers, handleDelete }) {
   return (
     <table className="table mt-5">
       <thead>
@@ -13,6 +13,7 @@ function CustomerTable({ customers }) {
           <th scope="col">State</th>
           <th scope="col">Zip Code</th>
           <th scope="col">Level</th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
@@ -25,6 +26,13 @@ function CustomerTable({ customers }) {
             <td>{state}</td>
             <td>{zipcode}</td>
             <td>{level}</td>
+            <td>
+              <button 
+                className="btn delete"
+                onClick={handleDelete} 
+                data-id={id}>X
+              </button>
+            </td>
           </tr>
         ))}
       </tbody>
@@ -33,6 +41,7 @@ function CustomerTable({ customers }) {
 }
 
 CustomerTable.propTypes = {
+  handleDelete: PropTypes.func.isRequired,
   customers: PropTypes.arrayOf(
     PropTypes.exact({
       id: PropTypes.number.isRequired,
